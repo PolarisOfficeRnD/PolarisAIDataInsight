@@ -3,13 +3,13 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
-name = "langchain-polarisoffice-datainsight"
-version = "0.1.0"
+name = "langchain-polaris-ai-datainsight"
+version = "0.1.1"
 description = "An integration package connecting PODataInsight and LangChain"
-authors = []
+authors = ["Ernie <ernie.c.jeong@polarisoffice.com>"]
 readme = "README.md"
 license = "MIT"
-repository = "https://github.com/langchain-ai/langchain"
+repository = "https://github.com/PolarisOfficeRnD/PolarisAIDataInsight"
 # homepage = "" # TODO: Add Playground
 
 [tool.mypy]
@@ -20,7 +20,7 @@ disallow_untyped_defs = "True"
 "Release Notes" = "https://github.com/langchain-ai/langchain/releases?q=tag%3A%22polarisoffice-datainsight%3D%3D0%22&expanded=true"
 
 [tool.poetry.dependencies]
-python = ">=3.9,<4.0"
+python = ">=3.11,<4.0"
 langchain-core = "^0.3.15"
 python-dotenv = "^1.1.0"
 
