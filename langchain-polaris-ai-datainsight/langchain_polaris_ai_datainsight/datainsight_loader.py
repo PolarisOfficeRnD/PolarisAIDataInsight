@@ -186,20 +186,20 @@ class PolarisAIDataInsightLoader(BaseLoader):
         )
 
     def lazy_load(self) -> Iterator[Document]:
+        # Create a temporary directory for unzipping the response file
+        unzip_dir_path = create_temp_dir(self.resources_dir)
+        
         # Get the input file path
         response = self._get_response(self.blob)
 
-        # Create a temporary directory for unzipping the response file
-        unzip_dir_path = create_temp_dir(self.resources_dir)
-
         # Unzip the response and get the JSON data
-        json_data, image_paths_dict = self._unzip_response(response, unzip_dir_path)
+        json_data, images_path_map = self._unzip_response(response, unzip_dir_path)
 
         # Check if the "page", "elements" keys are present in the JSON data
         self._validate_data_structure(json_data)
 
         # Convert the JSON data to Document objects
-        document_list = self._convert_json_to_documents(json_data, image_paths_dict)
+        document_list = self._convert_json_to_documents(json_data, images_path_map)
 
         yield from document_list
 
@@ -225,7 +225,6 @@ class PolarisAIDataInsightLoader(BaseLoader):
             # Handle any other exceptions
             raise ValueError(f"An error occurred: {e}")
 
-
     def _unzip_response(self, response: requests.Response, dir_path: str) -> Tuple[Dict, Dict]:
         # Unzip the response
         zip_content = response.content
@@ -241,11 +240,11 @@ class PolarisAIDataInsightLoader(BaseLoader):
                 raise ValueError("No JSON file found in the response.")
 
             # Find .png file and create a dictionary of image paths
-            image_paths = list(Path(dir_path).rglob("*.png"))
-            image_paths_dict = {}
-            for image_path in image_paths:
+            image_path_list = list(Path(dir_path).rglob("*.png"))
+            images_path_map = {}
+            for image_path in image_path_list:
                 image_filename = Path(image_path).name
-                image_paths_dict[image_filename] = image_path
+                images_path_map[image_filename] = image_path
 
             # Read the JSON file
             with open(json_files[0], "r", encoding="utf-8") as json_file:
@@ -254,18 +253,18 @@ class PolarisAIDataInsightLoader(BaseLoader):
             # Parse the JSON data
             try:
                 json_data = json.loads(data)
-                return json_data, image_paths_dict
+                return json_data, images_path_map
             except json.JSONDecodeError as e:
                 # Handle JSON decode errors
                 raise ValueError(f"Failed to decode JSON response: {e}")
 
-    def _convert_json_to_documents(self, json_data: Dict, image_paths_dict: Dict) -> list[Document]:
+    def _convert_json_to_documents(self, json_data: Dict, images_path_map: Dict) -> list[Document]:
         """
         Convert JSON data to Document objects.
         
         Args:
             json_data (Dict): JSON data to convert.
-            image_paths_dict (Dict): Dictionary of image paths.
+            images_path_map (Dict): Dictionary mapping image file name to image path.
                 
         Returns:
             list[Document]: List of Document objects.        
@@ -273,9 +272,10 @@ class PolarisAIDataInsightLoader(BaseLoader):
         if self.mode == "element":
             document_list = []
             for doc_page in json_data["pages"]:
+                page_size = (doc_page["pageWidth"], doc_page["pageHeight"])
                 for doc_element in doc_page["elements"]:
                     element_content, element_metadata = self._parse_doc_element(
-                        doc_element, image_paths_dict
+                        doc_element, images_path_map, page_size
                     )
                     document_list.append(
                         Document(page_content=element_content, metadata=element_metadata)
@@ -289,10 +289,11 @@ class PolarisAIDataInsightLoader(BaseLoader):
                     "elements": [],  # [{"type": "...", "coordinates": {"left": 0, "top": 0, "right": 0, "bottom": 0}}, ...]
                     "resources": {}     # {"image id" : "image path"}
                 }            
+                page_size = (doc_page["pageWidth"], doc_page["pageHeight"])
                 # Parse elements in the page
                 for doc_element in doc_page["elements"]:
                     element_content, element_metadata = self._parse_doc_element(
-                        doc_element, image_paths_dict
+                        doc_element, images_path_map, page_size
                     )
 
                     # Add element content to page content
@@ -316,9 +317,10 @@ class PolarisAIDataInsightLoader(BaseLoader):
             }
             # Parse elements in the document
             for doc_page in json_data["pages"]:
+                page_size = (doc_page["pageWidth"], doc_page["pageHeight"])
                 for doc_element in doc_page["elements"]:
                     element_content, element_metadata = self._parse_doc_element(
-                        doc_element, image_paths_dict
+                        doc_element, images_path_map, page_size
                     )
                     
                     # Add element content to document content
@@ -331,12 +333,12 @@ class PolarisAIDataInsightLoader(BaseLoader):
 
             return [Document(page_content=doc_content, metadata=doc_metadata)]
 
-    def _parse_doc_element(self, doc_element: Dict, image_paths_dict: Dict) -> Tuple[str, Dict]:
+    def _parse_doc_element(self, doc_element: Dict, images_path_map: Dict, page_size: Tuple[int, int]) -> Tuple[str, Dict]:
         """ Parse a document element and extract its content and metadata.
 
         Args:
             doc_element (Dict): The document element to parse.
-            image_paths_dict (Dict): Dictionary of image paths.
+            images_path_map (Dict): Dictionary mapping image file name to image path.
         
         Exceptions:
             ValueError: If the image path is not found.
@@ -347,9 +349,14 @@ class PolarisAIDataInsightLoader(BaseLoader):
         data_type = doc_element.pop("type")
         content = doc_element.pop("content")
         boundary_box = doc_element.pop("boundaryBox")
-                
-        # TODO: boundary_box를 절대 좌표에서 상대 좌표로 변환 (page_width, page_height 필수)
-        # ...
+   
+        # Convert absolute coordinates to relative coordinates
+        if page_size[0] > 0:
+            boundary_box["left"] = boundary_box["left"] / page_size[0]
+            boundary_box["right"] = boundary_box["right"] / page_size[0]
+        if page_size[1] > 0:
+            boundary_box["top"] = boundary_box["top"] / page_size[1]
+            boundary_box["bottom"] = boundary_box["bottom"] / page_size[1]
 
         # Result dictionary
         element_content = ""
@@ -362,11 +369,11 @@ class PolarisAIDataInsightLoader(BaseLoader):
         if data_type == "text":
             element_content = content.get("text")
         elif data_type == "table":
+            # TODO: Add table metadata
             element_content = content.get("json")
         else:
-            # TODO: Add support for other data types, Convert Image name to Image path
             image_filename = content.get("src")   # image filename
-            image_path = image_paths_dict.get(image_filename)
+            image_path = images_path_map.get(image_filename)
             if not image_path:
                 raise ValueError(f"Image path not found for {image_filename}")
                     
