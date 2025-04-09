@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "langchain-polaris-ai-datainsight"
-version = "0.1.1"
+version = "0.1.0"
 description = "An integration package connecting PODataInsight and LangChain"
 authors = ["Ernie <ernie.c.jeong@polarisoffice.com>"]
 readme = "README.md"
@@ -16,11 +16,11 @@ repository = "https://github.com/PolarisOfficeRnD/PolarisAIDataInsight"
 disallow_untyped_defs = "True"
 
 [tool.poetry.urls]
-"Source Code" = "https://github.com/langchain-ai/langchain/tree/master/libs/partners/polarisoffice-datainsight"
-"Release Notes" = "https://github.com/langchain-ai/langchain/releases?q=tag%3A%22polarisoffice-datainsight%3D%3D0%22&expanded=true"
+"Source Code" = "https://github.com/langchain-ai/langchain/tree/master/libs/partners/polaris-ai-datainsight"
+"Release Notes" = "https://github.com/langchain-ai/langchain/releases?q=tag%3A%22polaris-ai-datainsight%3D%3D0%22&expanded=true"
 
 [tool.poetry.dependencies]
-python = ">=3.11,<4.0"
+python = ">=3.10,<4.0"
 langchain-core = "^0.3.15"
 python-dotenv = "^1.1.0"
 
@@ -53,6 +53,8 @@ optional = true
 optional = true
 
 [tool.poetry.group.dev.dependencies]
+polaris-ai-datainsight = {path = "../polaris-ai-datainsight/dist/polaris_ai_datainsight-0.1.0.tar.gz"}
+
 
 [tool.poetry.group.test.dependencies]
 pytest = "^7.4.3"
