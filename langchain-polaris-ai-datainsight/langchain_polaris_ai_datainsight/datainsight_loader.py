@@ -281,10 +281,9 @@ class PolarisAIDataInsightLoader(BaseLoader):
             element_content = content.get("json")
         else:
             image_path = content.get("src")   # image filename
+            image_filename = Path(image_path).name if image_path else None
             if not image_path:
                 raise ValueError(f"Image path not found for {image_filename}")
-            image_filename = Path(image_path).name
-                    
             # Make html tag for image resource
             element_content = f'\n\n<img src="#" alt="" id="{image_filename}"/>\n\n'
                                         
