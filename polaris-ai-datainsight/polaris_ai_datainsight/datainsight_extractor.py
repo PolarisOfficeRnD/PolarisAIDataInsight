@@ -297,13 +297,15 @@ class PolarisAIDataInsightExtractor:
     def _postprocess_json(self, json_data: Dict, images_path_map: Dict):
         for doc_page in json_data["pages"]:
             for doc_element in doc_page["elements"]:
-                if doc_element.get("type") == "src":
-                    self._replace_image_filenames_with_paths(doc_element, images_path_map)
-                
+                if doc_element.get("type") != "text":
+                    self._replace_image_filenames_with_paths(doc_element, images_path_map)                
 
     def _replace_image_filenames_with_paths(self, doc_element: Dict, images_path_map: Dict):
         # Convert image filename to image path
-        image_filename = doc_element.get("content").get("src")   # image filename
+        if "src" not in doc_element.get("content", {}):
+            return
+        
+        image_filename = doc_element.get("content").get("src")   # image filename        
         image_path = images_path_map.get(image_filename)
         if not image_path:
             raise ValueError(f"Image path not found for {image_filename}")                    
