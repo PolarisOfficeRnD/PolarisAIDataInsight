@@ -6,46 +6,68 @@ from langchain_core.documents import Document
 from polaris_ai_datainsight import PolarisAIDataInsightExtractor
 
 DataInsightModeType = Literal["single", "page", "element"]
+StrPath = str | Path
 
 class PolarisAIDataInsightLoader(BaseLoader):
     """
-    PODataInsight document loader integration
+    Polaris AI DataInsight Document Loader.
+    
+    This loader extracts text, images, and other objects from various document formats.
+    
+    Supported file formats: `.doc`, `.docx`, `.ppt`, `.pptx`, `.xls`, `.xlsx`, `.hwp`, `.hwpx`, `.pdf`
 
     Setup:
         Install ``langchain-polaris-ai-datainsight`` and set environment variable ``POLARIS_AI_DATA_INSIGHT_API_KEY``.
 
-        .. code-block:: bash
+        ```bash
             pip install -U langchain-polaris-ai-datainsight
             export POLARIS_AI_DATA_INSIGHT_API_KEY="your-api-key"
+        ```
 
     Instantiate:
-        .. code-block:: python
+        - Using a file path:
+        
+            ```python
             from langchain_community.document_loaders import PolarisAIDataInsightLoader
-
+        
             loader = PolarisAIDataInsightLoader(
-                file_path="path/to/file",
-                resources_dir="path/to/dir"
+                file_path="path/to/file.docx",
+                resources_dir="path/to/save/resources/"
             )
+            ```
+            
+        - Using file data and filename:
+        
+            ```python
+            from langchain_community.document_loaders import PolarisAIDataInsightLoader
+            
+            loader = PolarisAIDataInsightLoader(
+                file=open("path/to/file.docx", "rb").read(),
+                filename="file.docx",
+                resources_dir="path/to/save/resources/"
+            )
+            ```
 
-    # Load
     Lazy load:
-        .. code-block:: python
+        ```python
             docs = []
             docs_lazy = loader.lazy_load()
 
             for doc in docs_lazy:
                 docs.append(doc)
+                
             print(docs[0].page_content[:100])
             print(docs[0].metadata)
+        ```
     """
     
     @overload
     def __init__(
         self,
         *,
-        file_path: str | Path,
+        file_path: StrPath,
         api_key: Optional[str],
-        resources_dir: str | Path = "app/",
+        resources_dir: StrPath = "app/",
         mode: DataInsightModeType = "single"
     ): ...
 
@@ -56,38 +78,62 @@ class PolarisAIDataInsightLoader(BaseLoader):
         file: bytes,
         filename: str,
         api_key: Optional[str],
-        resources_dir: str | Path = "app/",
+        resources_dir: StrPath = "app/",
         mode: DataInsightModeType = "single"
     ): ...
         
     def __init__(self, *args, **kwargs):
         """
-        This class is used to load document contents from the Polaris Office Data Insight API response.
+        Initialize the instance.
+    
+        The instance can be initialized in two ways:
+        1. Using a file path: provide the `file_path` parameter
+        2. Using bytes data: provide both `file` and `filename` parameters
         
-        This constructor supports two methods for specifying file input:
+        Note:
+            If you provide both `file_path` and `file`/`filename`, a ValueError will be raised.
 
-        Method 1:
-            Provide the ``file_path`` parameter.
-            - ``file_path`` (str or Path): The path to the file.
-
-        Method 2:
-            Provide both the ``file`` and ``filename`` parameters.
-            - ``file`` (bytes): The file data.
-            - ``filename`` (str): The name of the file.
-
-        Additional parameters:
-            - ``api_key`` (Optional[str]): Optional API key. If not provided, the API key from the environment
-            variable will be used.
-            - ``resources_dir`` (str or Path, optional): The directory for saving resource files. Defaults to ``"app/"``.
-            - ``mode`` (DataInsightModeType, optional): Extraction mode. Must be one of ``"element"``, ``"page"``, or
-            ``"single"``. Defaults to ``"single"``.
-
-        Raises:
-            ValueError: If neither ``file_path`` nor both ``file`` and ``filename`` are provided, or if an invalid
-                        combination of parameters is given.
+        Args:
+            `file_path` (str, Path): Path to the file to process. Use instead of `file` and `filename`.
+            `file` (bytes): Bytes data of the file to process. Use instead of `file_path` and must be provided with `filename`.
+            `filename` (str): Name of the file when using bytes data. Must be provided with `file`.
+            `api_key` (str, optional): API authentication key. If not provided, the API key will be
+                retrieved from an environment variable. If no API key is found, a ValueError is raised.
+            `resources_dir` (str, optional): Resource directory path. If the
+                directory does not exist, it will be created. Defaults to "app/".
+            `mode` (str, optional): Document loader mode. Valid options are "element",
+                "page", or "single". Defaults to "single".
+        
+        Mode:
+            The mode parameter determines how the document is loaded:
+                `element`: Load each element in the pages as a separate Document object.
+                `page`: Load each page in the document as a separate Document object.
+                `single`: Load the entire document as a single Document object.
+        
+        Example:
+            - Using a file path:
+            
+                ```python
+                loader = PolarisAIDataInsightLoader(
+                    file_path="path/to/file.docx",
+                    api_key="your-api-key",                 # or set as environment variable
+                    resources_dir="path/to/save/resources/"
+                )
+                ```
+             
+            - Using file data and filename:
+            
+                ```python
+                loader = PolarisAIDataInsightLoader(
+                    file=open("path/to/file.docx", "rb").read(),
+                    filename="file.docx",
+                    api_key="your-api-key",                 # or set as environment variable
+                    resources_dir="path/to/save/resources/"
+                )
+                ```
         """
         
-        self.mode = kwargs.get("mode")
+        self.mode: DataInsightModeType = kwargs.get("mode")
         self.doc_extractor: PolarisAIDataInsightExtractor = None
         
         # Check if the file_path is provided
