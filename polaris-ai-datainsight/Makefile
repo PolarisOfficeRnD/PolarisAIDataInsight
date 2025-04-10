@@ -28,7 +28,7 @@ PYTHON_FILES=.
 MYPY_CACHE=.mypy_cache
 lint format: PYTHON_FILES=.
 lint_diff format_diff: PYTHON_FILES=$(shell git diff --relative=libs/partners/polaris-ai-datainsight --name-only --diff-filter=d master | grep -E '\.py$$|\.ipynb$$')
-lint_package: PYTHON_FILES=langchain_polaris_ai_datainsight
+lint_package: PYTHON_FILES=polaris_ai_datainsight
 lint_tests: PYTHON_FILES=tests
 lint_tests: MYPY_CACHE=.mypy_cache_test
 
@@ -47,7 +47,7 @@ spell_check:
 spell_fix:
 	poetry run codespell --toml pyproject.toml -w
 
-check_imports: $(shell find langchain_polaris_ai_datainsight -name '*.py')
+check_imports: $(shell find polaris_ai_datainsight -name '*.py')
 	poetry run python ./scripts/check_imports.py $^
 
 ######################
