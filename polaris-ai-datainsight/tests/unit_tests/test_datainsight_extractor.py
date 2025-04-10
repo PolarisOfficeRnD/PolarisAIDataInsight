@@ -14,8 +14,11 @@ EXAMPLE_NOT_EXIST_DOC_PATH = Path(__file__).parent.parent / "examples" / "no_fil
 @pytest.fixture
 def temp_resources_dir():
     """Create a temporary directory."""
-    with tempfile.TemporaryDirectory(dir=Path(__file__).parent.parent / "examples") as temp_resources_dir:
-        yield temp_resources_dir
+    with tempfile.TemporaryDirectory(
+            prefix="example_", 
+            dir=Path(__file__).parent.parent / "examples"
+        ) as temp_resources_dir:
+        yield Path(temp_resources_dir)
 
 ######################
 # -- SUCCESS TEST -- #
@@ -54,7 +57,6 @@ def test_init__load_blob_from_file_and_filename(temp_resources_dir, file: bytes,
 ######################
 # -- FAILURE TEST -- #
 ######################
-
 
 @pytest.mark.parametrize("file_path", [EXAMPLE_DOC_PATH])
 @pytest.mark.parametrize("file", [open(EXAMPLE_DOC_PATH, "rb").read()])

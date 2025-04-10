@@ -34,10 +34,10 @@ MOCK_RESPONSE_DATA_STRUCTURE = {
 def temp_resources_dir():
     """Create a temporary directory."""
     with tempfile.TemporaryDirectory(
-        prefix="example_", dir=Path(__file__).parent.parent / "examples"
-    ) as temp_resources_dir:
+            prefix="example_", 
+            dir=Path(__file__).parent.parent / "examples"
+        ) as temp_resources_dir:
         yield Path(temp_resources_dir)
-
 
 @pytest.fixture
 def mock_response():
@@ -49,7 +49,6 @@ def mock_response():
         content=MOCK_RESPONSE_ZIP_PATH.read_bytes(),
     )
     
-    # Return extrator instance
     yield mock_response
     
     patcher.stop()

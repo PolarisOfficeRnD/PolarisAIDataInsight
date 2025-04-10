@@ -14,8 +14,11 @@ EXAMPLE_NOT_EXIST_DOC_PATH = Path(__file__).parent.parent / "examples" / "no_fil
 @pytest.fixture
 def temp_resources_dir():
     """Create a temporary directory."""
-    with tempfile.TemporaryDirectory(dir=Path(__file__).parent.parent / "examples") as temp_dir:
-        yield temp_dir
+    with tempfile.TemporaryDirectory(
+            prefix="example_", 
+            dir=Path(__file__).parent.parent / "examples"
+        ) as temp_resources_dir:
+        yield Path(temp_resources_dir)
         
 ######################
 # -- SUCCESS TEST -- #

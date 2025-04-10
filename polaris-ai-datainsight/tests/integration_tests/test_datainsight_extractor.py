@@ -1,14 +1,33 @@
 
-import os
 from pathlib import Path
 import tempfile
-from typing import Any, Dict
 from unittest.mock import MagicMock, patch
 from polaris_ai_datainsight import PolarisAIDataInsightExtractor
 import pytest
 
 EXAMPLE_DOC_PATH: Path = Path(__file__).parent.parent / "examples" / "example.docx"
 MOCK_RESPONSE_ZIP_PATH: Path = Path(__file__).parent.parent / "examples" / "example.zip"
+
+# -- For checking the test result -- #
+MOCK_RESPONSE_DATA_STRUCTURE = {
+    "elements": {
+        "total": 10,
+        "text": 5,
+        "image": 5,
+    },
+    "pages": {
+        "total": 2,
+        "1": {
+            "total": 7,
+            "text": 5,
+            "image": 2,
+        },
+        "2": {
+            "total": 3,
+            "image": 3,
+        },
+    },
+}
 
 @pytest.fixture
 def temp_resources_dir():
@@ -55,8 +74,8 @@ def test_extract__validate_extracted_json(mock_extractor):
     assert "elements" in doc.get("pages")[0]
     
     # Check if the result contains the expected number of contents
-    assert len(doc.get("pages")) == 2
-    assert len(doc.get("pages")[0].get("elements")) == 7
+    assert len(doc.get("pages")) == MOCK_RESPONSE_DATA_STRUCTURE["pages"]["total"]
+    assert len(doc.get("pages")[0].get("elements")) == MOCK_RESPONSE_DATA_STRUCTURE["pages"]["1"]["total"]
     
 def test_extract__validate_resource_dir_and_files(temp_resources_dir: Path, mock_extractor: PolarisAIDataInsightExtractor):
     # Call the method
@@ -69,7 +88,7 @@ def test_extract__validate_resource_dir_and_files(temp_resources_dir: Path, mock
     # Check if it is a directory, and contains the expected number of files
     resources_dir = resources_dirs[0]
     assert resources_dir.is_dir()
-    assert len(list(resources_dir.glob("*.png"))) == 5
+    assert len(list(resources_dir.glob("*.png"))) == MOCK_RESPONSE_DATA_STRUCTURE["elements"]["image"]
     
     # Check if the resources is saved in the resources directory
     for page in doc.get("pages"):
