@@ -301,7 +301,7 @@ class PolarisAIDataInsightExtractor:
                     self._replace_image_filenames_with_paths(doc_element, images_path_map)
                 
 
-    def _replace_image_filenames_with_paths(self, doc_element: Dict, images_path_map: Dict) -> Tuple[str, Dict]:
+    def _replace_image_filenames_with_paths(self, doc_element: Dict, images_path_map: Dict):
         # Convert image filename to image path
         image_filename = doc_element.get("content").get("src")   # image filename
         image_path = images_path_map.get(image_filename)
