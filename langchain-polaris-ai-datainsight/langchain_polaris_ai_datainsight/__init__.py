@@ -1,8 +1,6 @@
 from importlib import metadata
 
-from langchain_polaris_ai_datainsight.datainsight_loader import (
-    PolarisAIDataInsightLoader,
-)
+from .datainsight_loader import PolarisAIDataInsightLoader
 
 try:
     __version__ = metadata.version(__package__)
