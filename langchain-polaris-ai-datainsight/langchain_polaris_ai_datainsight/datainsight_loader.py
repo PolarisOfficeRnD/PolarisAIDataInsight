@@ -1,5 +1,6 @@
 """PODataInsight document loader."""
 
+import os
 from pathlib import Path
 from typing import Any, Dict, Iterator, Literal, Optional, Tuple, get_args, overload
 
@@ -145,6 +146,7 @@ class PolarisAIDataInsightLoader(BaseLoader):
 
         self.mode: DataInsightModeType = kwargs.get("mode")
         self.doc_extractor: PolarisAIDataInsightExtractor = None
+        _api_key = kwargs.get("api_key", os.environ.get("POLARIS_AI_DATA_INSIGHT_API_KEY"))        
 
         # Check if the file_path is provided
         if "file_path" in kwargs:
@@ -161,7 +163,7 @@ class PolarisAIDataInsightLoader(BaseLoader):
 
             self.doc_extractor = PolarisAIDataInsightExtractor(
                 file_path=kwargs["file_path"],
-                api_key=kwargs.get("api_key"),
+                api_key=_api_key,
                 resources_dir=kwargs.get("resources_dir", "app/"),
             )
 
@@ -179,7 +181,7 @@ class PolarisAIDataInsightLoader(BaseLoader):
             self.doc_extractor = PolarisAIDataInsightExtractor(
                 file=kwargs["file"],
                 filename=kwargs["filename"],
-                api_key=kwargs.get("api_key"),
+                api_key=_api_key,
                 resources_dir=kwargs.get("resources_dir", "app/"),
             )
 

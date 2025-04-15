@@ -135,12 +135,8 @@ class PolarisAIDataInsightExtractor:
                 )
                 ```
         """
-        # TODO: 나중에 상용 URL 로 수정하기
         # Set base url
-        self._api_base_url = os.environ.get(
-            "DATA_INSIGHT_BASE_URL",
-            "https://datainsight-api.polarisoffice.com/api/v1/datainsight/doc-extract",
-        )
+        self._api_base_url = "https://datainsight-api.polarisoffice.com/api/v1/datainsight/doc-extract"
         self._supported_extensions = get_args(SupportedExtensionType)
         self.blob: Blob = None
         self.resources_dir: StrPath = kwargs.get("resources_dir", "app/")
@@ -160,7 +156,14 @@ class PolarisAIDataInsightExtractor:
             if not isinstance(file_path, (str, Path)):
                 raise ValueError("`file_path` must be a string or Path object.")
 
-            self._init_from_file_path(file_path)
+            if not Path(file_path).exists():
+                raise ValueError(f"File {file_path} does not exist.")
+
+            self.blob = Blob.from_path(
+                path=file_path,
+                mime_type=determine_mime_type(file_path),
+                metadata={"filename": Path(file_path).name},
+            )
 
         # Check if the file is provided
         elif "file" in kwargs and "filename" in kwargs:
@@ -173,7 +176,11 @@ class PolarisAIDataInsightExtractor:
             if not isinstance(filename, str):
                 raise ValueError("`filename` must be a string.")
 
-            self._init_from_file_and_filename(file, filename)
+            self.blob = Blob.from_data(
+                data=file,
+                mime_type=determine_mime_type(filename),
+                metadata={"filename": filename},
+            )
 
         else:
             raise ValueError("Either file_path or file/filename must be provided.")
@@ -216,23 +223,6 @@ class PolarisAIDataInsightExtractor:
         """
         extension = Path(file_path).suffix.lower()
         return extension in self._supported_extensions
-
-    def _init_from_file_path(self, file_path):
-        if not Path(file_path).exists():
-            raise ValueError(f"File {file_path} does not exist.")
-
-        self.blob = Blob.from_path(
-            path=file_path,
-            mime_type=determine_mime_type(file_path),
-            metadata={"filename": Path(file_path).name},
-        )
-
-    def _init_from_file_and_filename(self, file, filename):
-        self.blob = Blob.from_data(
-            data=file,
-            mime_type=determine_mime_type(filename),
-            metadata={"filename": filename},
-        )
 
     def extract(self) -> Dict:
         # Create a temporary directory for unzipping the response file

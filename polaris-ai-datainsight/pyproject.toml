@@ -1,10 +1,15 @@
 [project]
 name = "polaris-ai-datainsight"
 version = "0.1.0"
-description = "Add your description here"
+description = "This package is Python SDK for Polaris AI DataInsight."
+authors = ["Ernie <ernie.c.jeong@polarisoffice.com>"]
 readme = "README.md"
-requires-python = ">=3.10,<4.0"
-dependencies = []
+license = "MIT"
+repository = "https://github.com/PolarisOfficeRnD/PolarisAIDataInsight/"
+homepage = "https://datainsight.polarisoffice.com/"
+
+[tool.poetry.urls]
+"Source Code" = "https://github.com/PolarisOfficeRnD/PolarisAIDataInsight/polaris-ai-datainsight"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
@@ -15,6 +20,9 @@ packages = [
     { include = "polaris_ai_datainsight" },
     { include = "utils" }
 ]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<4.0"
 
 [tool.poetry.group.test]
 optional = true
