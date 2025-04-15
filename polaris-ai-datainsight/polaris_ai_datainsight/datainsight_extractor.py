@@ -135,8 +135,9 @@ class PolarisAIDataInsightExtractor:
                 )
                 ```
         """
-        # Set base url
-        self._api_base_url = "https://datainsight-api.polarisoffice.com/api/v1/datainsight/doc-extract"
+        self._api_base_url = (
+            "https://datainsight-api.polarisoffice.com/api/v1/datainsight/doc-extract"
+        )
         self._supported_extensions = get_args(SupportedExtensionType)
         self.blob: Blob = None
         self.resources_dir: StrPath = kwargs.get("resources_dir", "app/")

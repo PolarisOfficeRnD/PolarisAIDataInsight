@@ -17,7 +17,7 @@ disallow_untyped_defs = "True"
 
 [tool.poetry.urls]
 "Source Code" = "https://github.com/PolarisOfficeRnD/PolarisAIDataInsight/langchain-polaris-ai-datainsight"
-"Release Notes" = "https://github.com/langchain-ai/langchain/releases?q=tag%3A%22polaris-ai-datainsight%3D%3D0%22&expanded=true"
+"Release Notes" = "https://github.com/langchain-ai/langchain/releases?q=tag%3A%langchain-polaris-ai-datainsight%3D%3D0%22&expanded=true"
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"

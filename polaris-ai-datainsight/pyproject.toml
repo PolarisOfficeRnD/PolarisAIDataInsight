@@ -2,7 +2,9 @@
 name = "polaris-ai-datainsight"
 version = "0.1.0"
 description = "This package is Python SDK for Polaris AI DataInsight."
-authors = ["Ernie <ernie.c.jeong@polarisoffice.com>"]
+authors = [
+    { name = "Ernie", email = "ernie.c.jeong@polarisoffice.com"}
+]
 readme = "README.md"
 license = "MIT"
 repository = "https://github.com/PolarisOfficeRnD/PolarisAIDataInsight/"
