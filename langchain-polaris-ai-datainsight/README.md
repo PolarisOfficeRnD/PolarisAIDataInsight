@@ -1,8 +1,12 @@
 # langchain-polaris-ai-datainsight
 
-This package contains the LangChain integration with PODataInsight
+This package covers Polaris AI DataInsight integration with LangChain.
 
-## Installation
+Converts documents in various formats—including Word, HWP, Sheets, Slides, and PDF—into List of Document.
+
+## Installation and Setup
+
+To use PolarisAIDataInsight model, you need to install a python package:
 
 ```bash
 pip install -U langchain-polaris-ai-datainsight
@@ -14,12 +18,14 @@ And you should configure credentials by setting the following environment variab
 export POLARIS_AI_DATA_INSIGHT_API_KEY="your-api-key"
 ```
 
+Refer to [here](https://datainsight.polarisoffice.com/documentation/quickstart) how to get an Polaris AI DataInsight API key.
+
+
 ## Document Loaders
 
-`PolarisAIDataInsightLoader` class exposes document loader from PODataInsight.
 
 ```python
-from langchain_community.document_loaders import PolarisAIDataInsightLoader
+from langchain_polaris_ai_datainsight import PolarisAIDataInsightLoader
 
 loader = PolarisAIDataInsightLoader(
     file_path="path/to/file",
