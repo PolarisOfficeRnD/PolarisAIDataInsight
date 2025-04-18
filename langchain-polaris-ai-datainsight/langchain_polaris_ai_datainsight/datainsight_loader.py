@@ -365,13 +365,13 @@ class PolarisAIDataInsightLoader(BaseLoader):
         return resource_ids
     
     @staticmethod
-    def get_resource_by_id(document: Document, resource_id: int) -> str | list[dict]:
+    def get_resource_by_id(document: Document, resource_id: str) -> str | list[dict]:
         """
         Get resource by id from the document.
 
         Args:
             document (Document): Document object to extract resource from.
-            resource_id (int): Resource id to extract.
+            resource_id (str): Resource id to extract.
 
         Returns:
             str | list[dict]: Resource data.
