@@ -1,4 +1,4 @@
-# mcp-polaris-ai-datainsight
+# ![logo](/assets/logo/polarisoffice-logo-small.svg) mcp-polaris-ai-datainsight
 
 [Polaris AI DataInsight](https://datainsight.polarisoffice.com/) is an API service that easily converts documents in various formats into structured data (such as JSON).
 
