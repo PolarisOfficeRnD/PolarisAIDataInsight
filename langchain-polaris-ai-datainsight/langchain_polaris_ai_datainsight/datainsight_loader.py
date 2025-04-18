@@ -2,6 +2,7 @@
 
 import os
 from pathlib import Path
+import re
 from typing import Any, Dict, Iterator, Literal, Optional, Tuple, get_args, overload
 
 from langchain_core.document_loaders.base import BaseLoader
@@ -286,6 +287,7 @@ class PolarisAIDataInsightLoader(BaseLoader):
         Returns:
             Tuple[str, Dict]: The extracted content and metadata.
         """
+        element_id = doc_element.get("id")
         data_type = doc_element.pop("type")
         content = doc_element.pop("content")
         boundary_box = doc_element.pop("boundaryBox")
@@ -301,20 +303,28 @@ class PolarisAIDataInsightLoader(BaseLoader):
         if data_type == "text":
             element_content = content.get("text")
         elif data_type == "table":
-            # TODO: Add table metadata
-            element_content = content.get("json")
+            table_id = f"di.table.{element_id}"
+            table_content = content.get("json")
+            
+            element_content = f'\n\n<div id="{table_id}"/>\n'
+            
+            if element_metadata.get("resources") is None:
+                element_metadata["resources"] = {}
+            element_metadata["resources"][table_id] = table_content
         else:
             image_path = content.get("src")  # image filename
             image_filename = Path(image_path).name if image_path else None
+            image_id = f"di.image.{element_id}"
             if not image_path:
                 raise ValueError(f"Image path not found for {image_filename}")
+            
             # Make html tag for image resource
-            element_content = f'\n\n<img src="#" alt="" id="{image_filename}"/>\n\n'
+            element_content = f'\n\n<img src="#" alt="" id="{image_id}"/>\n\n'
 
             # Add metadata for image file access
             if element_metadata.get("resources") is None:
                 element_metadata["resources"] = {}
-            element_metadata["resources"][image_filename] = image_path
+            element_metadata["resources"][image_id] = image_path
 
         return element_content, element_metadata
 
@@ -323,3 +333,75 @@ class PolarisAIDataInsightLoader(BaseLoader):
             raise ValueError("Invalid JSON data structure.")
         if "elements" not in json_data["pages"][0]:
             raise ValueError("Invalid JSON data structure.")
+
+
+    @staticmethod
+    def get_ids_from_document(document: Document) -> list[str]:
+        """
+        Look for image and table ids in the document's page content, and return list of ids.
+
+        Args:
+            document (Document): Document object to extract resource ids from.
+
+        Returns:
+            List[str]: List of resource ids.
+        """
+        if not isinstance(document, Document):
+            raise ValueError("The document must be an instance of Document.")
+        if "resources" not in document.metadata:
+            return []
+        
+        # result dictionary
+        resource_ids = []
+        
+        page_content = document.page_content
+        page_content_split = page_content.split("\n\n")
+        for content in page_content_split:
+            if content.startswith('<img src="#" alt="" id="di.image.') or content.startswith('<div id="di.table.'):
+                resource_id = re.search(r'id="(.*?)"', content)
+                if resource_id:
+                    resource_id = resource_id.group(1)
+                    resource_ids.append(resource_id)
+        return resource_ids
+    
+    @staticmethod
+    def get_resource_by_id(document: Document, resource_id: int) -> str | list[dict]:
+        """
+        Get resource by id from the document.
+
+        Args:
+            document (Document): Document object to extract resource from.
+            resource_id (int): Resource id to extract.
+
+        Returns:
+            str | list[dict]: Resource data.
+        """
+        if not isinstance(document, Document):
+            raise ValueError("The document must be an instance of Document.")
+        if "resources" not in document.metadata:
+            return {}
+
+        resource = document.metadata["resources"].get(resource_id)
+        if not resource:
+            raise ValueError(f"Resource with id {resource_id} not found.")
+        return resource
+    
+    @staticmethod
+    def get_resources_from_documents(documents:list[Document]) -> dict:
+        """
+        Get resources from documents.
+
+        Args:
+            documents (list[Document]): List of Document objects to extract resources from.
+
+        Returns:
+            dict: Dictionary of resources.
+        """
+        if not isinstance(documents, list):
+            raise ValueError("The documents must be a list of Document objects.")
+        
+        resources = {}
+        for document in documents:
+            if "resources" in document.metadata:
+                resources.update(document.metadata["resources"])
+        return resources
