@@ -32,7 +32,7 @@ If you prefer a manual setup, add the following configuration to your IDE's MCP 
 {
   "mcpServers": {
     "": {
-      "command": "pipx",
+      "command": "npx",
       "args": [],
       "env": {}
     }
@@ -48,6 +48,54 @@ Config file locations:
 ### Method 3: VS Code Installation
 
 ~~TODO~~
+
+### Method 4: Clone git repository
+
+Preinstall `uv` and `poetry`.
+
+1. Clone repository
+    ```sh
+    git clone --branch main https://github.com/PolarisOfficeRnD/PolarisAIDataInsight.git
+    ```
+    If you want to clone only `mcp-polaris-ai-datainsight` directory:
+    ```sh
+    # Git Version >= 2.25
+    git clone --filter=blob:none --sparse --branch main https://github.com/PolarisOfficeRnD/PolarisAIDataInsight.git
+    ```
+    ```sh
+    cd PolarisAIDataInsight
+    ```
+    ```sh
+    git sparse-checkout set mcp-polaris-ai-datainsight
+    ```
+2. Install python dependencies in virtual environment
+    ```sh
+    cd mcp-polaris-ai-datainsight
+    ```
+    ```sh
+    uv venv .venv
+
+    # Linux
+    source .venv/bin/activate
+    # Windows
+    .venv\bin\activate
+    ```
+    ```sh
+    poetry install
+    ```
+3. Set API Key as environment value and Run server
+    ```sh
+    # Linux
+    export POLARIS_AI_DATA_INSIGHT_API_KEY="your-api-key"
+    # Windows
+    set POLARIS_AI_DATA_INSIGHT_API_KEY="your-api-key"
+    ```
+    ```sh
+    # Linux
+    uv run src/server.py
+    # Windows
+    uv run src\server.py
+    ```
 
 ## Output
 
