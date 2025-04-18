@@ -1,4 +1,4 @@
-[tool.poetry]
+[project]
 name = "mcp-polaris-ai-datainsight"
 version = "0.1.0"
 description = "Add your description here"
@@ -7,3 +7,4 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.10"
 polaris-ai-datainsight = "^0.1.1"
+mcp = {extras = ["cli"], version = "^1.6.0"}
