@@ -11,7 +11,7 @@ For more details, please refer to the [documentation](https://datainsight.polari
 ### Doc Extract
 Extract text, images, and other elements from various document formats.
 - Images in the document are stored on local storage, and the corresponding image paths are included in the JSON output.
-- Tables are represented in JSON format, as illustrated in [this example](\examples\example_tool_output.json).
+- Tables are represented in JSON format, as illustrated in [this example](/examples/example_tool_output.json).
 
 ## Installation and Setup
 
@@ -51,5 +51,5 @@ Config file locations:
 
 ## Output
 
-- Refer to [this example](\examples\example_tool_output.json) for a sample output.
+- Refer to [this example](/examples/example_tool_output.json) for a sample output.
 - Alternatively, you can test our API using the [playground](https://datainsight.polarisoffice.com/playground/doc-extract).
