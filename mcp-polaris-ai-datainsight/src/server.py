@@ -1,10 +1,12 @@
+import logging
 from mcp.server.fastmcp import FastMCP
-from .tools.datainsight_tool import call_datainsight_api
+from tools.datainsight_tool import call_datainsight_api
 
+logger = logging.getLogger(__name__)
 mcp = FastMCP("polaris-ai-datainsight", dependencies=["polaris_ai_datainsight"])
 
 mcp.add_tool(
-    func=call_datainsight_api,
+    fn=call_datainsight_api,
     name="extract_content_from_document",
     description=
     """
@@ -18,6 +20,9 @@ mcp.add_tool(
     """
 )
 
-if __name__ == "__main__":
-    # Run the MCP server
+def run():
+    logger.info("Starting MCP server...")
     mcp.run()
+
+if __name__ == "__main__":
+    run()
