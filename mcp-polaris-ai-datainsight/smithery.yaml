@@ -4,15 +4,13 @@ build:
 startCommand:
   type: stdio
   configSchema:
-    type: stdio
-    configSchema:
-      type: object
-      required:
-        - polarisAIDataInsightApiKey
-      properties:
-        polarisAIDataInsightApiKey:
-          type: string
-          description: The API key for the Polaris AI DataInsight.
+    type: object
+    required:
+      - polarisAIDataInsightApiKey
+    properties:
+      polarisAIDataInsightApiKey:
+        type: string
+        description: The API key for the Polaris AI DataInsight.
   commandFunction:
     |-
     (config) => ({
