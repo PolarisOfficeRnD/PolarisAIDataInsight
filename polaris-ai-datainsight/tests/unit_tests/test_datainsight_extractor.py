@@ -41,11 +41,10 @@ def test_init__load_blob_from_file_path(temp_resources_dir, file_path):
     assert extractor.blob.data == file_path.read_bytes()
 
 
-@pytest.mark.parametrize("file", [open(EXAMPLE_DOC_PATH, "rb").read()])
-@pytest.mark.parametrize("filename", [EXAMPLE_DOC_PATH.name])
-def test_init__load_blob_from_file_and_filename(
-    temp_resources_dir, file: bytes, filename: str
-):
+def test_init__load_blob_from_file_and_filename(temp_resources_dir):
+    file = open(EXAMPLE_DOC_PATH, "rb").read()
+    filename = EXAMPLE_DOC_PATH.name
+
     """Test PolarisAIDataInsightLoader with file_path."""
     extractor = PolarisAIDataInsightExtractor(
         file=file,
@@ -65,11 +64,10 @@ def test_init__load_blob_from_file_and_filename(
 
 
 @pytest.mark.parametrize("file_path", [EXAMPLE_DOC_PATH])
-@pytest.mark.parametrize("file", [open(EXAMPLE_DOC_PATH, "rb").read()])
-@pytest.mark.parametrize("filename", [EXAMPLE_DOC_PATH.name])
-def test_init__wrong_parameter_combination(
-    temp_resources_dir, file_path: Path, file: bytes, filename: str
-):
+def test_init__wrong_parameter_combination(temp_resources_dir, file_path: Path):
+    file = open(EXAMPLE_DOC_PATH, "rb").read()
+    filename = EXAMPLE_DOC_PATH.name
+
     # When both file_path and file are provided
     with pytest.raises(ValueError):
         PolarisAIDataInsightExtractor(
@@ -108,9 +106,10 @@ def test_init__no_exist_file(temp_resources_dir, file_path: Path):
         )
 
 
-@pytest.mark.parametrize("file", [None])
-@pytest.mark.parametrize("filename", [EXAMPLE_NOT_EXIST_DOC_PATH.name])
-def test_init__empty_from_file(temp_resources_dir, file: bytes, filename: str):
+def test_init__empty_from_file(temp_resources_dir):
+    file = None
+    filename = EXAMPLE_NOT_EXIST_DOC_PATH.name
+
     with pytest.raises(ValueError):
         PolarisAIDataInsightExtractor(
             file=file,
@@ -121,11 +120,10 @@ def test_init__empty_from_file(temp_resources_dir, file: bytes, filename: str):
 
 
 @pytest.mark.parametrize("file_path", [EXAMPLE_UNSUPPORTED_DOC_PATH])
-@pytest.mark.parametrize("file", [open(EXAMPLE_UNSUPPORTED_DOC_PATH, "rb").read()])
-@pytest.mark.parametrize("filename", [EXAMPLE_UNSUPPORTED_DOC_PATH.name])
-def test_init__unsupported_extension(
-    temp_resources_dir, file_path: Path, file: bytes, filename: str
-):
+def test_init__unsupported_extension(temp_resources_dir, file_path: Path):
+    file = open(EXAMPLE_UNSUPPORTED_DOC_PATH, "rb").read()
+    filename = EXAMPLE_UNSUPPORTED_DOC_PATH.name
+
     # When file_path is provided, check supported file type
     with pytest.raises(ValueError):
         PolarisAIDataInsightExtractor(

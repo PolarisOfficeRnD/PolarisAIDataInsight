@@ -1,6 +1,6 @@
 import logging
 from mcp.server.fastmcp import FastMCP
-from tools.datainsight_tool import call_datainsight_api
+from .tools.datainsight_tool import call_datainsight_api
 
 logger = logging.getLogger(__name__)
 mcp = FastMCP("polaris-ai-datainsight", dependencies=["polaris_ai_datainsight"])

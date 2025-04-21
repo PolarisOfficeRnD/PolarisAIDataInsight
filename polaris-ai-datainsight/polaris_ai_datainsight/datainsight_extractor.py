@@ -7,8 +7,8 @@ import zipfile
 from pathlib import Path
 from typing import Dict, Literal, Optional, Tuple, get_args, overload
 import requests
-from utils.file_utils import create_temp_dir
-from utils.http_utils import Blob, determine_mime_type
+from .utils.file_utils import create_temp_dir
+from .utils.http_utils import Blob, determine_mime_type
 
 POLARISOFFICE_DATAINSIGHT_BASE_URL = os.environ.get("DATA_INSIGHT_BASE_URL")
 
