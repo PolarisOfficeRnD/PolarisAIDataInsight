@@ -1,6 +1,4 @@
 # Smithery.ai configuration
-build:
-  dockerfile: ./Dockerfile
 startCommand:
   type: stdio
   configSchema:
@@ -11,8 +9,7 @@ startCommand:
       polarisAIDataInsightApiKey:
         type: string
         description: The API key for the Polaris AI DataInsight.
-  commandFunction:
-    |-
+  commandFunction: |
     (config) => ({
       command: "python",
       args: ["-m", "mcp_polaris_ai_datainsight.server"],
