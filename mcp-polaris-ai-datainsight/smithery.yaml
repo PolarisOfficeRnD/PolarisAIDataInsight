@@ -1,0 +1,19 @@
+# Smithery.ai configuration
+startCommand:
+type: stdio
+configSchema:
+  # JSON Schema defining the configuration options for the MCP.
+  {}
+commandFunction:
+  # A function that produces the CLI command to start the MCP on stdio.
+  |-
+  (config) => ({
+    "command": "python",
+    "args": [
+      "-m",
+      "mcp_polaris_ai_datainsight.server"
+    ],
+    "env": {
+      "POLARIS_AI_DATA_INSIGHT_API_KEY": config.polarisAIDataInsightApiKey
+    }
+  })
