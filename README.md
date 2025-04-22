@@ -1,8 +1,8 @@
-# Polaris AI DataInsight
+# ![logo](assets/logo/polarisoffice-logo-small.svg) Polaris AI DataInsight
 
-Polaris AI DataInsight is an API service that easily converts documents in various formats into structured data (such as JSON). This product goes beyond simple conversion functionality, utilizing AI-based technology to generate structured document data and metadata from existing documents in bulk.
+[Polaris AI DataInsight](https://datainsight.polarisoffice.com) is an API service that easily converts documents in various formats into structured data (such as JSON). This product goes beyond simple conversion functionality, utilizing AI-based technology to generate structured document data and metadata from existing documents in bulk.
 
-Converts documents in various formats—including Word, HWP, Sheets, Slides, and PDF—into structured formats such as JSON.
+Converts documents in various formats—including Word, HWP, Sheets, and Slides—into structured formats such as JSON.
 
 For more detailed information, please refer to the [documentation](https://datainsight.polarisoffice.com/documentation/overview).
 

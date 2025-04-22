@@ -20,7 +20,7 @@ class PolarisAIDataInsightLoader(BaseLoader):
     This loader extracts text, images, and other objects from various document formats.
 
     Supported file formats:
-    `.doc`, `.docx`, `.ppt`, `.pptx`, `.xls`, `.xlsx`, `.hwp`, `.hwpx`, `.pdf`
+    `.doc`, `.docx`, `.ppt`, `.pptx`, `.xls`, `.xlsx`, `.hwp`, `.hwpx`
 
     Setup:
         Install ``langchain-polaris-ai-datainsight`` and
