@@ -1,8 +1,8 @@
-# langchain-polaris-ai-datainsight
+# ![logo](https://raw.githubusercontent.com/PolarisOfficeRnD/PolarisAIDataInsight/main/assets/logo/polarisoffice-logo-small.svg) langchain-polaris-ai-datainsight
 
 This package covers Polaris AI DataInsight integration with LangChain.
 
-Converts documents in various formats—including Word, HWP, Sheets, Slides, and PDF—into List of Document.
+Converts documents in various formats—including Word, HWP, Sheets, and Slides—into List of Document.
 
 ## Installation and Setup
 
