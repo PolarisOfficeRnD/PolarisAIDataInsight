@@ -11,7 +11,7 @@ mcp.add_tool(
     description=
     """
     Extract the contents of a document into a structured JSON format. 
-    Supports multiple file types including docx, doc, pptx, ppt, xlsx, xls, pdf, and hwp.
+    Supports multiple file types including docx, doc, pptx, ppt, xlsx, xls, and hwp.
     `file_path` specifies the absolute path to the input document.
     `resources_dir` is the directory where image files extracted 
     from the document will be stored; it must be provided as an absolute path 

@@ -1,8 +1,8 @@
-# ![logo](/assets/logo/polarisoffice-logo-small.svg) mcp-polaris-ai-datainsight
+# ![logo](https://raw.githubusercontent.com/PolarisOfficeRnD/PolarisAIDataInsight/main/assets/logo/polarisoffice-logo-small.svg) mcp-polaris-ai-datainsight
 
 [Polaris AI DataInsight](https://datainsight.polarisoffice.com/) is an API service that easily converts documents in various formats into structured data (such as JSON).
 
-This tool supports the extraction of text, images, and other elements from various document formats (e.g., .doc, .docx, .ppt, .pptx, .xls, .xlsx, .hwp, .hwpx, .pdf).
+This tool supports the extraction of text, images, and other elements from various document formats (e.g., .doc, .docx, .ppt, .pptx, .xls, .xlsx, .hwp, .hwpx).
 
 For more details, please refer to the [documentation](https://datainsight.polarisoffice.com/documentation/overview).
 
@@ -20,38 +20,27 @@ Extract text, images, and other elements from various document formats.
 
 2. Choose an installation method
 
-### Method 1: CLI Installation
+### Method 1: Manual Configuration
 
-~~TODO: Supported clients: cursor, claude~~
-
-### Method 2: Manual Configuration
+Prerequirement: Install `uv`.
 
 If you prefer a manual setup, add the following configuration to your IDE's MCP config file:
 
 ```json
 {
   "mcpServers": {
-    "": {
-      "command": "npx",
-      "args": [],
-      "env": {}
+    "datainsight": {
+      "command": "uvx",
+      "args": ["mcp-polaris-ai-datainsight@latest"],
+      "env": {
+        "POLARIS_AI_DATA_INSIGHT_API_KEY": "your-api-key"
+      }
     }
   }
 }
 ```
 
-Config file locations:
-
-- Cursor: `~/.cursor/mcp.json`
-- Claude: `~/.claude/mcp_config.json`
-
-### Method 3: VS Code Installation
-
-~~TODO~~
-
-### Method 4: Clone git repository
-
-Preinstall `uv` and `poetry`.
+### Method 2: Docker Container
 
 1. Clone repository
     ```sh
@@ -68,6 +57,36 @@ Preinstall `uv` and `poetry`.
     ```sh
     git sparse-checkout set mcp-polaris-ai-datainsight
     ```
+2. Build Docker image:
+    ```sh
+    cd mcp-polaris-ai-datainsight
+
+    docker build . -t mcp-polaris-ai-datainsight
+    ```
+3. Use this MCP Server config:
+    ```json
+    {
+      "mcpServers": {
+        "datainsight": {
+          "command": "docker",
+          "args": [
+            "run",
+            "-i",
+            "--rm",
+            "mcp-polaris-ai-datainsight",
+            "-e",
+            "POLARIS_AI_DATA_INSIGHT_API_KEY=your-api-key"
+          ]
+        }
+      }
+    }
+    ```
+
+### Method 3: Clone git repository 
+
+Preinstall `uv` and `poetry`.
+
+1. Clone repository (please refer to __Method 4__ if you want to clone only `mcp-polaris-ai-datainsight` directory)
 2. Install python dependencies in virtual environment
     ```sh
     cd mcp-polaris-ai-datainsight
@@ -79,9 +98,9 @@ Preinstall `uv` and `poetry`.
     source .venv/bin/activate
     # Windows
     .venv\bin\activate
-    ```
-    ```sh
-    poetry install
+
+    
+    poetry install --no-root
     ```
 3. Set API Key as environment value and Run server
     ```sh
@@ -91,10 +110,7 @@ Preinstall `uv` and `poetry`.
     set POLARIS_AI_DATA_INSIGHT_API_KEY="your-api-key"
     ```
     ```sh
-    # Linux
-    uv run src/server.py
-    # Windows
-    uv run src\server.py
+    python -m mcp_polaris_ai_datainsight.server
     ```
 
 ## Output

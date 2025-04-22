@@ -1,7 +1,7 @@
 [project]
 name = "mcp-polaris-ai-datainsight"
 version = "0.0.3"
-description = "This tool supports the extraction of text, images, and other elements from various document formats (e.g., .doc, .docx, .ppt, .pptx, .xls, .xlsx, .hwp, .hwpx, .pdf)."
+description = "This tool supports the extraction of text, images, and other elements from various document formats."
 authors = [
     { name = "Ernie", email = "ernie.c.jeong@polarisoffice.com" },
 ]
