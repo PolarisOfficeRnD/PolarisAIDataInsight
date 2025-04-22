@@ -1,8 +1,8 @@
-# polaris-ai-datainsight
+# ![logo](https://raw.githubusercontent.com/PolarisOfficeRnD/PolarisAIDataInsight/main/assets/logo/polarisoffice-logo-small.svg) polaris-ai-datainsight
 
 This package is Python SDK for Polaris AI DataInsight.
 
-Converts documents in various formats—including Word, HWP, Sheets, Slides, and PDF—into structured JSON data.
+Converts documents in various formats—including Word, HWP, Sheets, and Slides—into structured JSON data.
 
 ## Installation and Setup
 

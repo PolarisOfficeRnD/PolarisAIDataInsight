@@ -13,7 +13,7 @@ from .utils.http_utils import Blob, determine_mime_type
 POLARISOFFICE_DATAINSIGHT_BASE_URL = os.environ.get("DATA_INSIGHT_BASE_URL")
 
 SupportedExtensionType = Literal[
-    ".doc", ".docx", ".ppt", ".pptx", ".xls", ".xlsx", ".hwp", ".hwpx", ".pdf"
+    ".doc", ".docx", ".ppt", ".pptx", ".xls", ".xlsx", ".hwp", ".hwpx"
 ]
 StrPath = str | Path
 
@@ -24,7 +24,7 @@ class PolarisAIDataInsightExtractor:
 
     This loader extracts text, images, and other objects from various document formats.
 
-    Supported file formats: `.doc`, `.docx`, `.ppt`, `.pptx`, `.xls`, `.xlsx`, `.hwp`, `.hwpx`, `.pdf`
+    Supported file formats: `.doc`, `.docx`, `.ppt`, `.pptx`, `.xls`, `.xlsx`, `.hwp`, `.hwpx`
 
     Setup:
         Install ``polaris-ai-datainsight`` and set environment variable ``POLARIS_AI_DATA_INSIGHT_API_KEY``.
@@ -119,7 +119,7 @@ class PolarisAIDataInsightExtractor:
                 ```python
                 extractor = PolarisAIDataInsightExtractor(
                     file_path="path/to/file.docx",
-                    api_key="your-api-key",
+                    api_key="your-api-key",         # or set as environment variable
                     resources_dir="path/to/save/resources/"
                 )
                 ```
@@ -130,7 +130,7 @@ class PolarisAIDataInsightExtractor:
                 extractor = PolarisAIDataInsightExtractor(
                     file=open("path/to/file.docx", "rb").read(),
                     filename="file.docx",
-                    api_key="your-api-key",
+                    api_key="your-api-key",         # or set as environment variable
                     resources_dir="path/to/save/resources/"
                 )
                 ```
