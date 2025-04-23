@@ -8,10 +8,36 @@ For more details, please refer to the [documentation](https://datainsight.polari
 
 ## Feature
 
-### Doc Extract
+### Extract content from document
 Extract text, images, and other elements from various document formats.
 - Images in the document are stored on local storage, and the corresponding image paths are included in the JSON output.
 - Tables are represented in JSON format, as illustrated in [this example](examples/example_tool_output.json).
+
+>⚠️ **It is recommended to use [`file_system` MCP Server](https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem) together with this.**
+
+`file_system` is required whenever your workflow needs to  
+
+- create directories to store resources, or  
+- verify existing file paths.  
+
+Below is an example configuration how to use `file_system` with Claude:
+```yaml
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/path/to/allowed/directory_1",
+        "/path/to/allowed/directory_2",
+        "..."
+      ]
+    }
+  }
+}
+```
+
 
 ## Installation and Setup
 
