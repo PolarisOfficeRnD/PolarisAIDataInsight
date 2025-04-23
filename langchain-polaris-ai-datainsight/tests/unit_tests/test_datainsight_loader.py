@@ -27,6 +27,7 @@ def temp_resources_dir():
 # -- SUCCESS TEST -- #
 ######################
 
+
 @pytest.mark.usefixtures("temp_resources_dir")
 @pytest.mark.parametrize("file_path", [EXAMPLE_DOC_PATH])
 def test_init__from_file_path(temp_resources_dir: Path, file_path: Path) -> None:
@@ -59,6 +60,7 @@ def test_init__from_file_and_filename(
 ######################
 # -- FAILURE TEST -- #
 ######################
+
 
 @pytest.mark.usefixtures("temp_resources_dir")
 @pytest.mark.parametrize("file_path", [EXAMPLE_DOC_PATH])
@@ -100,12 +102,10 @@ def test_init__no_exist_file(temp_resources_dir: Path, file_path: Path) -> None:
 
 @pytest.mark.usefixtures("temp_resources_dir")
 @pytest.mark.parametrize("file_path", [EXAMPLE_DOC_PATH])
-def test_init__empty_from_file(
-    temp_resources_dir: Path, file_path: Path
-) -> None:
+def test_init__empty_from_file(temp_resources_dir: Path, file_path: Path) -> None:
     file = None
     filename = file_path.name
-    
+
     with pytest.raises(ValueError):
         PolarisAIDataInsightLoader(
             file=file,
@@ -117,12 +117,10 @@ def test_init__empty_from_file(
 
 @pytest.mark.usefixtures("temp_resources_dir")
 @pytest.mark.parametrize("file_path", [EXAMPLE_UNSUPPORTED_DOC_PATH])
-def test_init__unsupported_extension(
-    temp_resources_dir: Path, file_path: Path
-) -> None:
+def test_init__unsupported_extension(temp_resources_dir: Path, file_path: Path) -> None:
     file = open(file_path, "rb").read()
     filename = file_path.name
-    
+
     # When file_path is provided, check supported file type
     with pytest.raises(ValueError):
         PolarisAIDataInsightLoader(
