@@ -5,11 +5,3 @@
 Converts documents in various formats—including Word, HWP, Sheets, and Slides—into structured formats such as JSON.
 
 For more detailed information, please refer to the [documentation](https://datainsight.polarisoffice.com/documentation/overview).
-
-## Additional Resources
-
-This repository contains 2 packages for Python SDKs.
-
-- [polaris-ai-datainsight](/polaris-ai-datainsight/)
-- [langchain-polaris-ai-datainsight](/langchain-polaris-ai-datainsight/)
-
