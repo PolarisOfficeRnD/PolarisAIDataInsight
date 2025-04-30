@@ -48,7 +48,7 @@ Below is an example configuration how to use `file_system` with Claude:
 
 ### Method 1: Manual Configuration
 
-Prerequirement: Install `uv`.
+Prerequirement: [Install `uv`](https://docs.astral.sh/uv/getting-started/installation/).
 
 If you prefer a manual setup, add the following configuration to your IDE's MCP config file:
 
@@ -57,7 +57,7 @@ If you prefer a manual setup, add the following configuration to your IDE's MCP 
   "mcpServers": {
     "datainsight": {
       "command": "uvx",
-      "args": ["mcp-polaris-ai-datainsight@latest"],
+      "args": ["--no-cache", "mcp-polaris-ai-datainsight@latest"],
       "env": {
         "POLARIS_AI_DATA_INSIGHT_API_KEY": "your-api-key"
       }
@@ -99,9 +99,9 @@ If you prefer a manual setup, add the following configuration to your IDE's MCP 
             "run",
             "-i",
             "--rm",
-            "mcp-polaris-ai-datainsight",
             "-e",
             "POLARIS_AI_DATA_INSIGHT_API_KEY=your-api-key"
+            "mcp-polaris-ai-datainsight",
           ]
         }
       }
