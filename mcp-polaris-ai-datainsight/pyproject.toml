@@ -1,6 +1,6 @@
 [project]
 name = "mcp-polaris-ai-datainsight"
-version = "0.0.5"
+version = "0.0.6"
 description = "This tool supports the extraction of text, images, and other elements from various document formats."
 authors = [
     { name = "Ernie", email = "ernie.c.jeong@polarisoffice.com" },
@@ -21,5 +21,5 @@ build-backend = "poetry.core.masonry.api"
 mcp-polaris-ai-datainsight = "mcp_polaris_ai_datainsight.server:run"
 
 [tool.poetry.dependencies]
-polaris-ai-datainsight = "^0.1.1"
+polaris-ai-datainsight = "^0.1.0"
 mcp = {extras = ["cli"], version = "^1.6.0"}

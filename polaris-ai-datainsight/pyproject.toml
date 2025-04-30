@@ -1,6 +1,6 @@
 [project]
 name = "polaris-ai-datainsight"
-version = "0.0.2"
+version = "0.0.3"
 description = "This package is Python SDK for Polaris AI DataInsight."
 authors = [
     { name = "Ernie", email = "ernie.c.jeong@polarisoffice.com"}
@@ -16,8 +16,8 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
-requests = "^2.32.3"
-pydantic = "^2.11.3"
+requests = ">=2.27"
+pydantic = ">=2"
 
 [tool.poetry.group.test]
 optional = true
