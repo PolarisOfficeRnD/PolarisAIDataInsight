@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "langchain-polaris-ai-datainsight"
-version = "0.0.1"
+version = "0.0.2"
 description = "An integration package connecting PODataInsight and LangChain"
 authors = ["Ernie <ernie.c.jeong@polarisoffice.com>"]
 readme = "README.md"
@@ -22,7 +22,7 @@ disallow_untyped_defs = "True"
 python = ">=3.10,<4.0"
 langchain-core = "^0.3.15"
 python-dotenv = "^1.1.0"
-polaris-ai-datainsight = "^0.1.1"
+polaris-ai-datainsight = "*"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "T201"]
